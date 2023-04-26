@@ -16,7 +16,7 @@ model Category {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
+  id      String      @id  @unique
   email   String   @unique
   name    String
   hash String
@@ -27,4 +27,6 @@ model User {
   country String? @db.VarChar(100)
   phone Int? @db.Integer()
   photo String? @db.VarChar(100)
+
+  @@map("users")
 }
