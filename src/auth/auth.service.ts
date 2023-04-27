@@ -7,6 +7,8 @@ import { Prisma } from '@prisma/client';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { randomUUID } from 'crypto';
 import { JwtService } from '@nestjs/jwt'
+import { StoreService } from 'src/store/store.service';
+import { generateSlug } from 'src/common/slug-generator';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +16,8 @@ export class AuthService {
   constructor(
     private prisma : PrismaService,
     private config : ConfigService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private storeService: StoreService
   ){}
 
   // Register Service
@@ -28,12 +31,36 @@ export class AuthService {
     try{
       const newUser = await this.prisma.user.create({
         data: {
-          ...dto, hash, id: randomUUID()
+          id: randomUUID(),
+          name: dto.name,
+          email: dto.email,
+          hash: hash,
         }
       })
 
+      // If is Seller is true, lets create data store
+      if(dto.is_seller) {
+        // Generate Slug for store
+        const slug =  generateSlug(dto.store_name, newUser.id)
+        // Create Store
+        const store = await this.storeService.createStore({
+          id_user: newUser.id,
+          id_category: Number(dto.id_category),
+          store_name: dto.store_name,
+          slug
+        })
+
+        delete newUser.hash
+
+        return {
+          user: newUser,
+          store: store
+        }
+      }
+
       delete newUser.hash
       return newUser
+
     }catch(err) {
       if(err instanceof Prisma.PrismaClientKnownRequestError){
         if(err.code == 'P2002') {

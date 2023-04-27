@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsNotEmpty } from "class-validator"
+import { IsEmail, IsString, IsNotEmpty, IsBoolean, IsOptional, IsNumber } from "class-validator"
 
 export class AuthRegisterDto {
 
@@ -14,4 +14,15 @@ export class AuthRegisterDto {
   @IsString()
   @IsNotEmpty()
   password: string
+
+  @IsString()
+  @IsOptional()
+  is_seller: boolean
+
+  @IsString()
+  @IsOptional()
+  store_name: string
+
+  @IsOptional()
+  id_category: String
 }
