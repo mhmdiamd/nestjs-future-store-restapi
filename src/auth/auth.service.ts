@@ -35,11 +35,12 @@ export class AuthService {
           name: dto.name,
           email: dto.email,
           hash: hash,
+          is_seller: dto.is_seller ? true : false
         }
       })
 
       // If is Seller is true, lets create data store
-      if(dto.is_seller) {
+      if(newUser && dto.is_seller) {
         // Generate Slug for store
         const slug =  generateSlug(dto.store_name, newUser.id)
         // Create Store
@@ -62,6 +63,7 @@ export class AuthService {
       return newUser
 
     }catch(err) {
+      console.log(err)
       if(err instanceof Prisma.PrismaClientKnownRequestError){
         if(err.code == 'P2002') {
           throw new ForbiddenException('Credentials Taken!')
@@ -94,6 +96,7 @@ export class AuthService {
       const access_token = await this.signToken({
         id: user.id,
         email: user.email,
+        is_seller: user.is_seller,
         photo: user.photo
       })
 
@@ -109,11 +112,13 @@ export class AuthService {
     id: string,
     email: string,
     photo: string
+    is_seller: boolean,
   }): Promise<string> {
     const payload = {
       sub: data.id,
       email: data.email,
-      photo: data.photo
+      photo: data.photo,
+      is_seller: data.is_seller
     }
     const access_token = await this.jwtService.signAsync(payload, {
       expiresIn: "30m",

@@ -1,21 +1,15 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 
 export class CreateProductDto {
 
   @IsNotEmpty()
   @IsString()
-  id_store: string
-
-  @IsNotEmpty()
-  @IsString()
-  id_categories: string 
-
-  @IsNotEmpty()
-  @IsString()
-  name: string
+  product_name: string
 
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({value}) => Number(value))
   price: number
 
   @IsNotEmpty()
@@ -25,5 +19,6 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsNumber()
   @Min(1)
+  @Transform(({value}) => Number(value))
   stock: number
 }

@@ -9,7 +9,8 @@ async function bootstrap() {
   // Set Global Prefix Route
   app.setGlobalPrefix('api/v1')
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true
+    whitelist: true,
+    transform: true
   }));
 
   await app.listen(3000);

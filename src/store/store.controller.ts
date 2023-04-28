@@ -1,8 +1,10 @@
-import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Patch } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { Response } from 'express';
 import { generateSlug } from 'src/common/slug-generator';
+import { StoreDecorator } from './decorator/store.decorator';
+import { Store } from '@prisma/client';
 
 @Controller('stores')
 export class StoreController {
@@ -24,6 +26,11 @@ export class StoreController {
     }catch(err) {
       res.status(err.response.statusCode).send(err.response)
     }
+  }
+
+  @Patch(':id')
+  async updateStoreById(@StoreDecorator() store: Store) {
+    
   }
 }
 

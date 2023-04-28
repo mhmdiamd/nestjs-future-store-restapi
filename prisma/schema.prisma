@@ -13,7 +13,7 @@ datasource db {
 model Category {
   id        Int      @default(autoincrement()) @id
   name     String
-  store Store?
+  stores Store[]
 }
 
 model User {
@@ -42,10 +42,23 @@ model Store {
   user User @relation(fields: [id_user], references: [id])
   slug   String   @unique
   store_name   String
-  id_category Int @unique
+  id_category Int 
   category Category @relation(fields: [id_category], references: [id])
   description   String? 
   photo String?
 
+  products Product[]
   @@map("stores")
+}
+
+model Product {
+  id      String      @id  @unique
+  id_store   String  
+  store Store @relation(fields: [id_store], references: [id])
+  product_name   String
+  price   Int
+  description String
+  stock Int
+
+  @@map("products")
 }

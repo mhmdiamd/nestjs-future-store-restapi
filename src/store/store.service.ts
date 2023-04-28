@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { randomUUID } from 'crypto';
 import { Prisma } from '@prisma/client';
+import { UpdateStoreDto } from './dto/update-store.dto';
 
 @Injectable()
 export class StoreService {
@@ -30,5 +31,28 @@ export class StoreService {
       }
       throw err
     }
+  }
+
+  /**
+   * Update Store ById
+   */
+
+  async updateStore(id: string, dto: UpdateStoreDto) {
+    try{
+      const updateStore = await this.prisma.store.update({
+        where: {
+          id: id
+        },
+        data: {
+          ...dto
+        }
+      })
+
+      
+      return updateStore
+    }catch(err) {
+      console.log(err)
+    }
+  
   }
 }
