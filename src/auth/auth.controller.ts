@@ -15,7 +15,7 @@ export class AuthController {
     @Res() res: Response
   ) {
     try{
-      const data = await this.authService.register(dto)
+      await this.authService.register(dto)
       res.status(HttpStatus.CREATED).send({ status: "Success", message: "Register Success, Please login!" })
     }catch(err) {
       console.log(err)

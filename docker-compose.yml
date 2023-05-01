@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  future-store-db:
+    image: postgres:latest
+    container_name: postgres-future-store-db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DB}
+    volumes:
+      - restapi-future-store:/var/lib/postgresql/data
+    networks:
+      - mhmdiamd
+    restart: unless-stopped
+networks:
+  mhmdiamd:
+
+volumes:
+  restapi-future-store:

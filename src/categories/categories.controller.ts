@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Res, Req, Query } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('categories')
 export class CategoriesController {
@@ -38,12 +38,14 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number, @Res() res: Response) {
+  async remove(
+    @Param('id') id: number, 
+    @Res() res: Response
+  ) {
     try{
       const data = await this.categoriesService.remove(+id);
       res.status(HttpStatus.OK).send({ status: "Success", data: data })
     }catch(err) {
-      console.log(err)
       res.status(err.response.statusCode).send(err.response)
     }
   }
