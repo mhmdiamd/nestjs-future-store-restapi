@@ -25,14 +25,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         id: payload.sub
       },
        include: {
-        store: {
-          select: {
-            id: true
-          }
-        }
+        store: true
        }
     })
+
     delete user.hash
+    delete user.store?.id_user
     return user
   }
 }

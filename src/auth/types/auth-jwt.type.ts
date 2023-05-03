@@ -1,9 +1,9 @@
 export interface IAuthJwt {
-  id: string
+  sub: string
   name: string
   is_seller: boolean
   photo: string,
 
-  sub?:number
-  exp:number
+  iat?:number
+  exp?:number
 }

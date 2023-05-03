@@ -60,5 +60,20 @@ model Product {
   description String
   stock Int
 
+  photo_product PhotoProduct?
+
   @@map("products")
+}
+
+model PhotoProduct {
+  id      String      @id  @unique
+  id_product   String  @unique
+  product Product @relation(fields: [id_product], references: [id])
+
+  photo1 String
+  photo2 String?
+  photo3 String?
+  photo4 String?
+
+  @@map("photo_product")
 }

@@ -80,6 +80,9 @@ export class AuthService {
       const user = await this.prisma.user.findUnique({
         where: {
           email: dto.email
+        },
+        include :{
+          store: true
         }
       })
       // Throw Error when email not found

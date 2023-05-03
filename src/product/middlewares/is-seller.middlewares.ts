@@ -15,7 +15,7 @@ export class IsSellerMiddleware implements NestMiddleware {
     const token = req.headers.authorization.split(' ')
     // Decode token and get the transcript data
     const payload: IAuthJwt = this.jwtService.verify(token[1], {
-      secret: this.config.get('JWT_SECRET')
+      secret: process.env.JWT_SECRET
     })
     // Next if user is seller
     if(payload.is_seller){

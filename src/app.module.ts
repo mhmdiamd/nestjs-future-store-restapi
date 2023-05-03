@@ -8,14 +8,19 @@ import { ProductModule } from './product/product.module';
 import { StoreModule } from './store/store.module';
 import { IsSellerMiddleware } from './product/middlewares';
 import { JwtModule } from '@nestjs/jwt';
+import { PhotoProductModule } from './photo-product/photo-product.module';
+import { GoogleDriveModule } from './gcp/google-drive/google-drive.module';
+import { MulterModule } from '@nestjs/platform-express';
+
 
 @Module({
   imports: [
+    MulterModule.register({}),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     JwtModule.register({}),
-    CategoriesModule, PrismaModule, AuthModule, UserModule, ProductModule, StoreModule],
+    CategoriesModule, PrismaModule, AuthModule, UserModule, ProductModule, StoreModule, PhotoProductModule, GoogleDriveModule],
   controllers: [],
   providers: [],
 })
